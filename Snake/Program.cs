@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using System.Threading;
+using System.Media;
 
 namespace Snake
 {
@@ -21,8 +22,16 @@ namespace Snake
 
     class Program
     {
+        static void PlayMusic()
+        {
+            System.Media.SoundPlayer bgm = new System.Media.SoundPlayer();
+            bgm.SoundLocation = "../../bgm.wav";
+            bgm.PlayLooping();
+        }
+
         static void Main(string[] args)
         {
+            PlayMusic();
             byte right = 0;
             byte left = 1;
             byte down = 2;
@@ -30,7 +39,7 @@ namespace Snake
             //means the last time the snakeElement ate
             int lastFoodTime = 0;
             //the time till the food spawns again
-            int foodDissapearTime = 8000;
+            int foodDissapearTime = 16000;
 
             int negativePoints = 0;
 
@@ -56,11 +65,16 @@ namespace Snake
             //These represent the obstacles
             List<Position> obstacles = new List<Position>()
             {
-                new Position(12, 12),
-                new Position(14, 20),
-                new Position(7, 7),
-                new Position(19, 19),
-                new Position(6, 9),
+                new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+                            randomNumbersGenerator.Next(0, Console.WindowWidth)),
+                new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+                            randomNumbersGenerator.Next(0, Console.WindowWidth)),
+                new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+                            randomNumbersGenerator.Next(0, Console.WindowWidth)),
+                new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+                            randomNumbersGenerator.Next(0, Console.WindowWidth)),
+                new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+                            randomNumbersGenerator.Next(0, Console.WindowWidth)),
             };
             //This draws the obstacles on the screen
             foreach (Position obstacle in obstacles)
@@ -176,6 +190,7 @@ namespace Snake
                 //Snake eating on the food @ or is moving
                 if (snakeNewHead.col == food.col && snakeNewHead.row == food.row)
                 {
+                    Console.Beep();
                     // spawns new food at a random position if the snake ate the food
                     do
                     {
