@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections;
 using System.Threading;
 using System.Media;
+using System.IO;
 
 namespace Snake
 {
@@ -40,7 +41,7 @@ namespace Snake
             int lastFoodTime = 0;
             //the time till the food spawns again
             int foodDissapearTime = 16000;
-
+            int userPoints = 0;
             int negativePoints = 0;
 
             //array storing the direction of snake movement
@@ -65,15 +66,16 @@ namespace Snake
             //These represent the obstacles
             List<Position> obstacles = new List<Position>()
             {
-                new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+                //-1 prevents the obstacle from spawaning on the userpoints display
+                new Position(randomNumbersGenerator.Next(0, Console.WindowHeight - 1),
                             randomNumbersGenerator.Next(0, Console.WindowWidth)),
-                new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+                new Position(randomNumbersGenerator.Next(0, Console.WindowHeight - 1),
                             randomNumbersGenerator.Next(0, Console.WindowWidth)),
-                new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+                new Position(randomNumbersGenerator.Next(0, Console.WindowHeight - 1),
                             randomNumbersGenerator.Next(0, Console.WindowWidth)),
-                new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+                new Position(randomNumbersGenerator.Next(0, Console.WindowHeight - 1),
                             randomNumbersGenerator.Next(0, Console.WindowWidth)),
-                new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+                new Position(randomNumbersGenerator.Next(0, Console.WindowHeight - 1),
                             randomNumbersGenerator.Next(0, Console.WindowWidth)),
             };
             //This draws the obstacles on the screen
@@ -97,7 +99,7 @@ namespace Snake
             Position food;
             do
             {
-                food = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+                food = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight - 1),
                     randomNumbersGenerator.Next(0, Console.WindowWidth));
             }
             while (snakeElements.Contains(food) || obstacles.Contains(food));
@@ -119,7 +121,6 @@ namespace Snake
             while (true)
             {
                 negativePoints++;
-
                 //checks if user can input values through keyboard     
                 if (Console.KeyAvailable)
                 {
@@ -157,6 +158,14 @@ namespace Snake
                 if (snakeNewHead.row >= Console.WindowHeight) snakeNewHead.row = 0;
                 if (snakeNewHead.col >= Console.WindowWidth) snakeNewHead.col = 0;
 
+                //user points calculation
+                userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
+                if (userPoints < 0) userPoints = 0;
+                userPoints = Math.Max(userPoints, 0);
+                //displays points while playing game
+                string displaypoints = $" Points:{userPoints}";
+                Console.SetCursorPosition(Console.WindowWidth - displaypoints.Length, 0);
+                Console.WriteLine(displaypoints);
                 //checks snake collision with obstacles and ends the game
                 if (snakeElements.Contains(snakeNewHead) || obstacles.Contains(snakeNewHead))
                 {
@@ -164,10 +173,27 @@ namespace Snake
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Game over!");
                     //6 and not 5 because we enqueue snakeNewHead and dont dequeue snakeHead
-                    int userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
-                    //if (userPoints < 0) userPoints = 0;
-                    userPoints = Math.Max(userPoints, 0);
-                    Console.WriteLine("Your points are: {0}", userPoints);
+                    string points = $"Your points are: {userPoints}";
+                    Console.WriteLine(points);
+                    using (StreamWriter sw = File.CreateText("..\\..\\user.txt"))
+                    {
+                        sw.WriteLine(points);
+                    }
+
+                    return;
+                }
+                //winning game logic
+                if (userPoints >= 500)
+                {
+                    Console.SetCursorPosition(0, 0);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Congratulations!!! You Win !!!");
+                    string points = $"Your points are: {userPoints}";
+                    Console.WriteLine(points);
+                    using (StreamWriter sw = File.CreateText("..\\.."))
+                    {
+                        sw.WriteLine(points);
+                    }
                     return;
                 }
 
@@ -194,7 +220,8 @@ namespace Snake
                     // spawns new food at a random position if the snake ate the food
                     do
                     {
-                        food = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+                        //prevents the food spawaning on the user points text
+                        food = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight - 1),
                             randomNumbersGenerator.Next(0, Console.WindowWidth));
                     }
                     while (snakeElements.Contains(food) || obstacles.Contains(food));
@@ -210,7 +237,7 @@ namespace Snake
                     Position obstacle;
                     do
                     {
-                        obstacle = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+                        obstacle = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight - 1),
                             randomNumbersGenerator.Next(0, Console.WindowWidth));
                     }
                     while (snakeElements.Contains(obstacle) ||
@@ -236,12 +263,12 @@ namespace Snake
                 //if the snake does not eat food before it despawns the user points are penalised by increasing the negative points
                 if (Environment.TickCount - lastFoodTime >= foodDissapearTime)
                 {
-                    negativePoints = negativePoints + 50;
+                    negativePoints = negativePoints + 10;
                     Console.SetCursorPosition(food.col, food.row);
                     Console.Write(" ");
                     do
                     {
-                        food = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+                        food = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight - 1),
                             randomNumbersGenerator.Next(0, Console.WindowWidth));
                     }
                     while (snakeElements.Contains(food) || obstacles.Contains(food));

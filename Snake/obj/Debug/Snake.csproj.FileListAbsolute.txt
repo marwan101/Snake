@@ -12,3 +12,10 @@ C:\Users\User\Documents\GitHub\Snake\Snake\obj\Debug\Snake.pdb
 C:\Users\User\Documents\GitHub\Snake\Snake\bin\Debug\Snake.exe.config
 C:\Users\User\Documents\GitHub\Snake\Snake\bin\Debug\Snake.exe
 C:\Users\User\Documents\GitHub\Snake\Snake\bin\Debug\Snake.pdb
+D:\java\Snake\Snake\bin\Debug\Snake.exe.config
+D:\java\Snake\Snake\bin\Debug\Snake.exe
+D:\java\Snake\Snake\bin\Debug\Snake.pdb
+D:\java\Snake\Snake\obj\Debug\Snake.csprojAssemblyReference.cache
+D:\java\Snake\Snake\obj\Debug\Snake.csproj.CoreCompileInputs.cache
+D:\java\Snake\Snake\obj\Debug\Snake.exe
+D:\java\Snake\Snake\obj\Debug\Snake.pdb
