@@ -175,6 +175,7 @@ namespace Snake
                     //6 and not 5 because we enqueue snakeNewHead and dont dequeue snakeHead
                     string points = $"Your points are: {userPoints}";
                     Console.WriteLine(points);
+					Console.ReadLine();
                     using (StreamWriter sw = File.CreateText("..\\..\\user.txt"))
                     {
                         sw.WriteLine(points);
