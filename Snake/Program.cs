@@ -86,11 +86,11 @@ namespace Snake
                 Console.Write("=");
             }
 
-            //Creates the snake using a queue data structure of length 5
+            //Creates the snake using a queue data structure of length 3
             //Queue operates as a first-in first-out array
             Queue<Position> snakeElements = new Queue<Position>();
-            //sets the length of snake equal to 5
-            for (int i = 0; i <= 5; i++)
+            //sets the length of snake equal to 3
+            for (int i = 0; i <= 3; i++)
             {
                 snakeElements.Enqueue(new Position(0, i));
             }
