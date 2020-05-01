@@ -159,7 +159,7 @@ namespace Snake
                 if (snakeNewHead.col >= Console.WindowWidth) snakeNewHead.col = 0;
 
                 //user points calculation
-                userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
+                userPoints = (snakeElements.Count - 3) * 100 - negativePoints;
                 if (userPoints < 0) userPoints = 0;
                 userPoints = Math.Max(userPoints, 0);
                 //displays points while playing game
@@ -171,10 +171,11 @@ namespace Snake
                 {
                     Console.SetCursorPosition(0, 0);
                     Console.ForegroundColor = ConsoleColor.Red;
-					Console.SetCursorPosition((Console.WindowWidth - 1) / 2, (Console.WindowHeight - 1) / 2);
+					Console.SetCursorPosition(55, (Console.WindowHeight - 1) / 2);
                     Console.WriteLine("Game over!");
                     //6 and not 5 because we enqueue snakeNewHead and dont dequeue snakeHead
                     string points = $"Your points are: {userPoints}";
+					Console.SetCursorPosition(50, 15);
                     Console.WriteLine(points);
 					Console.ReadLine();
                     using (StreamWriter sw = File.CreateText("..\\..\\user.txt"))
