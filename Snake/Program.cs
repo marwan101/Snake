@@ -171,11 +171,11 @@ namespace Snake
                 {
                     Console.SetCursorPosition(0, 0);
                     Console.ForegroundColor = ConsoleColor.Red;
-					Console.SetCursorPosition(55, (Console.WindowHeight - 1) / 2);
+                    string points = $"Your points are: {userPoints}";
+                    Console.SetCursorPosition(((Console.WindowWidth - 1) / 2) - points.Length / 2, (Console.WindowHeight - 1) / 2);
                     Console.WriteLine("Game over!");
                     //6 and not 5 because we enqueue snakeNewHead and dont dequeue snakeHead
-                    string points = $"Your points are: {userPoints}";
-					Console.SetCursorPosition(50, 15);
+					Console.SetCursorPosition(((Console.WindowWidth - 1) / 2) - points.Length / 2, (Console.WindowHeight) / 2);
                     Console.WriteLine(points);
 					Console.ReadLine();
                     using (StreamWriter sw = File.CreateText("..\\..\\user.txt"))
